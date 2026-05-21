@@ -1,7 +1,7 @@
 [project]
-name = "early-ed-rag"
+name = "complianceiq"
 version = "0.1.0"
-description = "RAG pipeline over early-childhood-education public guidance documents"
+description = "ComplianceIQ — regulatory compliance navigator for childcare centers, powered by grounded retrieval over public regulations and guidance"
 requires-python = ">=3.11"
 dependencies = [
     "anthropic>=0.40.0",

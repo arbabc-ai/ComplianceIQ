@@ -1,6 +1,55 @@
-# Architecture deep dive
+# ComplianceIQ — Architecture deep dive
 
-This doc complements the README with the math + reasoning behind the choices.
+This doc complements the README with the math + reasoning behind the choices, and the Phase 2 + Phase 3 design intent.
+
+## The full value chain (DE → Data → RAG → Agent)
+
+ComplianceIQ is built as four phases, but only **Phase 1 (the RAG layer)** is in this repo.
+
+### Phase 2 — DE + Data layer
+
+**The DE problem:** Childcare regulations come from 50+ sources — federal CFR, state licensing boards, accreditation bodies, county/city ordinances. Each has its own update cadence (state regs annually, federal CFR yearly, NAEYC standards every few years). Manual scraping doesn't scale.
+
+**The Airflow shape:**
+- `daily_state_licensing_ingest` DAG — `HTTPOperator` fetches per-state rule PDFs, `S3KeyOperator` lands them in S3, `PythonOperator` extracts text via `pypdf`, `SnowflakeOperator` upserts to a raw-text landing table
+- `weekly_federal_regs_check` DAG — polls eCFR's update endpoint, re-ingests only changed parts
+- Sensors guard against partial pulls; each DAG has SLA + Slack alerts on failure
+
+**The dbt shape (medallion pattern):**
+```
+sources: raw_state_licensing_text, raw_head_start_text, raw_naeyc_text
+   ↓ (staging)
+stg_state_licensing_chunks, stg_head_start_chunks   (1:1 with source, light cleanup)
+   ↓ (intermediate)
+int_extracted_rules                                  (LLM-assisted structured extraction:
+                                                      pulls ratios, age bands, qualifications
+                                                      out of unstructured policy text)
+   ↓ (marts)
+fct_compliance_rules                                 (state × federal_program × age_band ×
+                                                      rule_type, business-facing fact table)
+dim_age_bands, dim_states, dim_accreditation_bodies  (conformed dimensions)
+```
+
+**The Snowflake shape:**
+- Star schema: ~50K-row fact table, tens of dimension rows
+- Zero-copy clones for dev/staging warehouses
+- Time Travel keeps 30-day audit log of rule changes (compliance-relevant)
+- Cortex `AI_CLASSIFY` (Snowflake's in-warehouse LLM) handles unstructured → structured extraction where cost-effective
+
+### Phase 3 — Agent layer
+
+**The agent problem:** Real compliance queries mix structured + unstructured. *"What's the staff:child ratio for my 18-month-olds and what research supports it?"* — first half is structured warehouse lookup, second half is RAG over policy/research text.
+
+**The agent shape:**
+- LLM router (Claude tool-use or OpenAI function-calling) inspects the query, decides which tools to call
+- Tool definitions:
+  - `lookup_ratio(state, age_band) → dict` — Snowflake SQL query
+  - `lookup_qualification(role, state) → dict` — Snowflake SQL query
+  - `search_guidance(query, k=5) → list[chunk]` — the RAG pipeline in this repo
+  - `calculate_compliance_score(center_id) → dict` — deterministic Python over the warehouse
+- Final compose step: agent receives all tool outputs, composes a grounded answer with citations from both sources, refuses when support is incomplete
+
+**Why this shape:** Pure RAG can't answer structured questions reliably ("what's the ratio?" is a lookup, not a search). Pure SQL can't answer unstructured guidance. The agent layer routes — that's where the customer value compounds.
 
 ## Why hybrid retrieval (BM25 + dense)
 

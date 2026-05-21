@@ -1,44 +1,55 @@
-# Ground-truth evaluation set for the early-ed RAG pipeline.
-# Each item: a question, expected keyword(s) in the answer, and the doc(s)
+# Ground-truth evaluation set for ComplianceIQ.
+# Each item: a question, expected keywords in the answer, and docs
 # expected to surface in top-k retrieval.
 
 questions:
+  # CDC developmental milestone questions (Head-Start-required tracking)
+  - question: "What motor milestones should I document at 6 months?"
+    expected_keywords: ["roll", "sit", "push"]
+    expected_sources: ["cdc_milestones_6_months.pdf"]
+
   - question: "When do most children start to say their first words?"
     expected_keywords: ["first words", "12 months", "year"]
     expected_sources: ["cdc_milestones_12_months.pdf"]
 
-  - question: "What motor milestones should I look for at 6 months?"
-    expected_keywords: ["roll", "sit", "push"]
-    expected_sources: ["cdc_milestones_6_months.pdf"]
-
-  - question: "Should a 2-year-old be using two-word sentences?"
+  - question: "Should a 2-year-old be using two-word phrases?"
     expected_keywords: ["two-word", "phrases", "2 years"]
     expected_sources: ["cdc_milestones_2_years.pdf"]
 
-  - question: "At what age can a child typically walk alone?"
-    expected_keywords: ["walks alone", "12 months", "15 months"]
-    expected_sources: ["cdc_milestones_12_months.pdf", "cdc_milestones_15_months.pdf"]
-
-  - question: "What social-emotional skills are expected at 4 years?"
+  - question: "What social-emotional milestones are expected at 4 years?"
     expected_keywords: ["share", "friends", "pretend"]
     expected_sources: ["cdc_milestones_4_years.pdf"]
 
-  - question: "When should children start pointing to objects?"
-    expected_keywords: ["pointing", "objects", "9 months", "12 months"]
-    expected_sources: ["cdc_milestones_9_months.pdf", "cdc_milestones_12_months.pdf"]
+  # Head Start compliance questions
+  - question: "What are the staff qualification requirements for Head Start teachers?"
+    expected_keywords: ["qualification", "education", "credential"]
+    expected_sources: ["head_start_1302_subpart_I"]
 
-  - question: "What language milestones are expected at 3 years?"
-    expected_keywords: ["sentences", "3 years", "names"]
-    expected_sources: ["cdc_milestones_3_years.pdf"]
+  - question: "What does Head Start require for developmental screening of enrolled children?"
+    expected_keywords: ["screening", "developmental", "45 days"]
+    expected_sources: ["head_start_1302_subpart_D", "head_start_1302_subpart_C"]
 
-  - question: "At what age do most children begin to crawl?"
-    expected_keywords: ["crawl", "6 months", "9 months"]
-    expected_sources: ["cdc_milestones_6_months.pdf", "cdc_milestones_9_months.pdf"]
+  - question: "What family engagement activities are required under Head Start?"
+    expected_keywords: ["family", "engagement", "parent"]
+    expected_sources: ["head_start_1302_subpart_E"]
 
-  - question: "What cognitive skills should a 5-year-old have?"
-    expected_keywords: ["count", "name", "5 years"]
-    expected_sources: ["cdc_milestones_5_years.pdf"]
+  - question: "What are the eligibility requirements for Head Start enrollment?"
+    expected_keywords: ["eligibility", "income", "age"]
+    expected_sources: ["head_start_1302_subpart_A"]
 
-  - question: "When do babies typically smile responsively?"
-    expected_keywords: ["smile", "2 months"]
-    expected_sources: ["cdc_milestones_2_months.pdf"]
+  - question: "What transition services must Head Start programs provide?"
+    expected_keywords: ["transition", "kindergarten", "elementary"]
+    expected_sources: ["head_start_1302_subpart_G"]
+
+  # Refusal cases — questions the corpus does NOT cover (should be politely refused)
+  - question: "What is the staff:child ratio for 18-month-olds in Ohio?"
+    expected_keywords: ["don't contain", "not", "regulations", "licensor"]
+    expected_sources: []   # Empty = should refuse; state licensing not bundled
+
+  - question: "What does NAEYC say about outdoor play?"
+    expected_keywords: ["don't contain", "not", "NAEYC"]
+    expected_sources: []   # Empty = should refuse; NAEYC copyrighted, not bundled
+
+  - question: "How do I file my company's taxes?"
+    expected_keywords: ["don't contain", "not", "tax"]
+    expected_sources: []   # Empty = should refuse; out of domain
