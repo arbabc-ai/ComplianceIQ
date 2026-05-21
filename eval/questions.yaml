@@ -1,0 +1,44 @@
+# Ground-truth evaluation set for the early-ed RAG pipeline.
+# Each item: a question, expected keyword(s) in the answer, and the doc(s)
+# expected to surface in top-k retrieval.
+
+questions:
+  - question: "When do most children start to say their first words?"
+    expected_keywords: ["first words", "12 months", "year"]
+    expected_sources: ["cdc_milestones_12_months.pdf"]
+
+  - question: "What motor milestones should I look for at 6 months?"
+    expected_keywords: ["roll", "sit", "push"]
+    expected_sources: ["cdc_milestones_6_months.pdf"]
+
+  - question: "Should a 2-year-old be using two-word sentences?"
+    expected_keywords: ["two-word", "phrases", "2 years"]
+    expected_sources: ["cdc_milestones_2_years.pdf"]
+
+  - question: "At what age can a child typically walk alone?"
+    expected_keywords: ["walks alone", "12 months", "15 months"]
+    expected_sources: ["cdc_milestones_12_months.pdf", "cdc_milestones_15_months.pdf"]
+
+  - question: "What social-emotional skills are expected at 4 years?"
+    expected_keywords: ["share", "friends", "pretend"]
+    expected_sources: ["cdc_milestones_4_years.pdf"]
+
+  - question: "When should children start pointing to objects?"
+    expected_keywords: ["pointing", "objects", "9 months", "12 months"]
+    expected_sources: ["cdc_milestones_9_months.pdf", "cdc_milestones_12_months.pdf"]
+
+  - question: "What language milestones are expected at 3 years?"
+    expected_keywords: ["sentences", "3 years", "names"]
+    expected_sources: ["cdc_milestones_3_years.pdf"]
+
+  - question: "At what age do most children begin to crawl?"
+    expected_keywords: ["crawl", "6 months", "9 months"]
+    expected_sources: ["cdc_milestones_6_months.pdf", "cdc_milestones_9_months.pdf"]
+
+  - question: "What cognitive skills should a 5-year-old have?"
+    expected_keywords: ["count", "name", "5 years"]
+    expected_sources: ["cdc_milestones_5_years.pdf"]
+
+  - question: "When do babies typically smile responsively?"
+    expected_keywords: ["smile", "2 months"]
+    expected_sources: ["cdc_milestones_2_months.pdf"]
