@@ -24,7 +24,7 @@ ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 MAX_TOKENS = 1024
 
 
-def _llm_call(system_prompt: str, user_content: str, max_tokens: int = MAX_TOKENS) -> str:
+def llm_call(system_prompt: str, user_content: str, max_tokens: int = MAX_TOKENS) -> str:
     if BEDROCK_PROFILE:
         import boto3
 
@@ -84,7 +84,7 @@ def answer(question: str, k: int = 5, mode: str = "hybrid") -> dict:
         }
 
     user_content = USER_TEMPLATE.format(question=question, context=_format_context(hits))
-    text = _llm_call(SYSTEM_PROMPT, user_content)
+    text = llm_call(SYSTEM_PROMPT, user_content)
     return {
         "answer": text,
         "sources": sorted({h["source"] for h in hits}),

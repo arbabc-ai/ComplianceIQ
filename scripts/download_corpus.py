@@ -24,19 +24,12 @@ from tqdm import tqdm
 
 DATA_RAW = Path("data/raw")
 
-# CDC Milestone Tracker PDFs (English). U.S. gov public domain.
+# CDC Milestone Tracker — consolidated checklist booklet (English).
+# U.S. gov public domain. CDC restructured the per-age PDF tree in 2024-2025;
+# the canonical source is now a single 42-page booklet covering 2 mo → 5 yr,
+# served from cdc.gov/act-early/. Chunker in src/ingest.py splits per section.
 CDC_CORPUS = [
-    ("cdc_milestones_2_months.pdf",   "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/2mo_eng_504.pdf"),
-    ("cdc_milestones_4_months.pdf",   "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/4mo_eng_504.pdf"),
-    ("cdc_milestones_6_months.pdf",   "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/6mo_eng_504.pdf"),
-    ("cdc_milestones_9_months.pdf",   "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/9mo_eng_504.pdf"),
-    ("cdc_milestones_12_months.pdf",  "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/12mo_eng_504.pdf"),
-    ("cdc_milestones_15_months.pdf",  "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/15mo_eng_504.pdf"),
-    ("cdc_milestones_18_months.pdf",  "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/18mo_eng_504.pdf"),
-    ("cdc_milestones_2_years.pdf",    "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/2yr_eng_504.pdf"),
-    ("cdc_milestones_3_years.pdf",    "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/3yr_eng_504.pdf"),
-    ("cdc_milestones_4_years.pdf",    "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/4yr_eng_504.pdf"),
-    ("cdc_milestones_5_years.pdf",    "https://www.cdc.gov/ncbddd/actearly/pdf/checklists/5yr_eng_504.pdf"),
+    ("cdc_milestones_all_ages.pdf",   "https://www.cdc.gov/act-early/media/pdfs/2025/10/cdc-milestone-checklists-ltsae-english-508.pdf"),
 ]
 
 # 45 CFR Part 1302 (Head Start Program Performance Standards) — fetched from eCFR.

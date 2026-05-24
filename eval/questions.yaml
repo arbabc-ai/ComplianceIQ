@@ -3,43 +3,48 @@
 # expected to surface in top-k retrieval.
 
 questions:
-  # CDC developmental milestone questions (Head-Start-required tracking)
+  # CDC developmental milestone questions (Head-Start-required tracking).
+  # CDC consolidated its per-age PDFs into one booklet in 2025 — expected source
+  # reflects the current upstream layout.
   - question: "What motor milestones should I document at 6 months?"
     expected_keywords: ["roll", "sit", "push"]
-    expected_sources: ["cdc_milestones_6_months.pdf"]
+    expected_sources: ["cdc_milestones_all_ages.pdf"]
 
   - question: "When do most children start to say their first words?"
     expected_keywords: ["first words", "12 months", "year"]
-    expected_sources: ["cdc_milestones_12_months.pdf"]
+    expected_sources: ["cdc_milestones_all_ages.pdf"]
 
   - question: "Should a 2-year-old be using two-word phrases?"
     expected_keywords: ["two-word", "phrases", "2 years"]
-    expected_sources: ["cdc_milestones_2_years.pdf"]
+    expected_sources: ["cdc_milestones_all_ages.pdf"]
 
   - question: "What social-emotional milestones are expected at 4 years?"
     expected_keywords: ["share", "friends", "pretend"]
-    expected_sources: ["cdc_milestones_4_years.pdf"]
+    expected_sources: ["cdc_milestones_all_ages.pdf"]
 
-  # Head Start compliance questions
+  # Head Start compliance questions. expected_sources must match full filenames
+  # in data/raw/ (set intersection in eval.py is exact-string).
   - question: "What are the staff qualification requirements for Head Start teachers?"
     expected_keywords: ["qualification", "education", "credential"]
-    expected_sources: ["head_start_1302_subpart_I"]
+    expected_sources: ["head_start_1302_subpart_I_Human-Resources-Management.txt"]
 
   - question: "What does Head Start require for developmental screening of enrolled children?"
     expected_keywords: ["screening", "developmental", "45 days"]
-    expected_sources: ["head_start_1302_subpart_D", "head_start_1302_subpart_C"]
+    expected_sources:
+      - "head_start_1302_subpart_D_Health-Program-Services.txt"
+      - "head_start_1302_subpart_C_Education-and-Child-Development-Program-Services.txt"
 
   - question: "What family engagement activities are required under Head Start?"
     expected_keywords: ["family", "engagement", "parent"]
-    expected_sources: ["head_start_1302_subpart_E"]
+    expected_sources: ["head_start_1302_subpart_E_Family-and-Community-Engagement-Program-Services.txt"]
 
   - question: "What are the eligibility requirements for Head Start enrollment?"
     expected_keywords: ["eligibility", "income", "age"]
-    expected_sources: ["head_start_1302_subpart_A"]
+    expected_sources: ["head_start_1302_subpart_A_Eligibility-Recruitment-Selection-Enrollment-Attendance.txt"]
 
   - question: "What transition services must Head Start programs provide?"
     expected_keywords: ["transition", "kindergarten", "elementary"]
-    expected_sources: ["head_start_1302_subpart_G"]
+    expected_sources: ["head_start_1302_subpart_G_Transition-Services.txt"]
 
   # Refusal cases — questions the corpus does NOT cover (should be politely refused)
   - question: "What is the staff:child ratio for 18-month-olds in Ohio?"
