@@ -16,4 +16,4 @@ ComplianceIQ: citation-grounded RAG navigator for childcare-center regulations (
 
 ## Rules
 - Public repo: never commit `.env`, keys, `data/raw/`, `data/chroma/`, `*.pkl`, `*.sqlite*` (see `.gitignore`). A local pre-commit hook (`.git/hooks/pre-commit` → `~/.claude/bin/secret-scan-staged.sh`) blocks staged secrets, `.env` files and data; `.claude/settings.json` denies reading/editing `.env`. Bypass only deliberately with `git commit --no-verify`.
-- Local commits only; no push unless asked.
+- Git/push: the global policy in ~/.claude/CLAUDE.md governs; /wrap pushes the current branch via wrap-push.sh. Hard stops still apply: no force-push or history rewrite; never push main/master of velodyn/* repos.
